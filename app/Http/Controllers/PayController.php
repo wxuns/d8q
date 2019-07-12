@@ -88,10 +88,10 @@ class PayController extends Controller
                     'out_order_sn'=>$sign_id.'_'.session('user_id'),
                     'name' => '企业签名',
                     'pay_way' => $paytype,
-                    'price'=>'1',
+                    'price'=>$price*100,
                     'attach'=>$planid,
                     'notify_url'=>env('APP_URL')."/notify/$request->key",
-                    'sign'=>md5(env('YMQ_APP_ID').$sign_id.'_'.session('user_id').'企业签名'.$paytype.'1'.$planid.env('APP_URL')."/notify/$request->key".env('YMQ_APP_KEY')),
+                    'sign'=>md5(env('YMQ_APP_ID').$sign_id.'_'.session('user_id').'企业签名'.$paytype.($price*100).$planid.env('APP_URL')."/notify/$request->key".env('YMQ_APP_KEY')),
                     'multiple' => [
                         'headers' => ['content-type'=>'application/x-www-form-urlencoded']
                     ]
@@ -179,7 +179,7 @@ class PayController extends Controller
      * @return bool|\Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * @throws \GuzzleHttp\Exception\GuzzleException
      */
-    public function buybalance($paytype){
+    public function buybalance($paytype,$price){
         $client = new Client([
             // Base URI is used with relative requests
             'base_uri' => 'https://open.yunmianqian.com',
@@ -191,9 +191,9 @@ class PayController extends Controller
                 'out_order_sn'=>$user_id,
                 'name' => '客户充值',
                 'pay_way' => $paytype,
-                'price'=>'1',
+                'price'=>intval($price)*100,
                 'notify_url'=>env('APP_URL')."/notifyblance/".$user_id,
-                'sign'=>md5(env('YMQ_APP_ID').$user_id.'客户充值'.$paytype.'1'.env('APP_URL')."/notifyblance/".$user_id.env('YMQ_APP_KEY')),
+                'sign'=>md5(env('YMQ_APP_ID').$user_id.'客户充值'.$paytype.(intval($price)*100).env('APP_URL')."/notifyblance/".$user_id.env('YMQ_APP_KEY')),
                 'multiple' => [
                     'headers' => ['content-type'=>'application/x-www-form-urlencoded']
                 ]
@@ -339,10 +339,10 @@ class PayController extends Controller
                     'out_order_sn'=>$sign_id.'_'.session('user_id'),
                     'name' => '签名续费',
                     'pay_way' => $paytype,
-                    'price'=>'1',
+                    'price'=>$price*100,
                     'attach'=>$planid,
                     'notify_url'=>env('APP_URL')."/notifyrenew/$request->key",
-                    'sign'=>md5(env('YMQ_APP_ID').$sign_id.'_'.session('user_id').'签名续费'.$paytype.'1'.$planid.env('APP_URL')."/notifyrenew/$request->key".env('YMQ_APP_KEY')),
+                    'sign'=>md5(env('YMQ_APP_ID').$sign_id.'_'.session('user_id').'签名续费'.$paytype.($price*100).$planid.env('APP_URL')."/notifyrenew/$request->key".env('YMQ_APP_KEY')),
                     'multiple' => [
                         'headers' => ['content-type'=>'application/x-www-form-urlencoded']
                     ]
